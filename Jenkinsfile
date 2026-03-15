@@ -25,10 +25,12 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                PYTHONPATH=. python -m pytest
+                export PYTHONPATH=$PWD
+                python -m pytest
                 '''
             }
         }
+
 
 
         stage('Build Artifact') {
