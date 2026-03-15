@@ -25,11 +25,13 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
+                export PYTHONPATH=$WORKSPACE
                 python -m pip install --break-system-packages -e .
                 python -m pytest
                 '''
             }
         }
+
 
 
 
