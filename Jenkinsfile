@@ -5,9 +5,10 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/Roshankumar02/Learning_CI-CD.git'
+                git branch: 'main', url: 'https://github.com/Roshankumar02/Learning_CI-CD.git'
             }
         }
+
 
         stage('Setup Python') {
             steps {
