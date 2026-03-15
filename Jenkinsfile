@@ -44,6 +44,25 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/*.whl'
             }
         }
+        stage('Deploy') {
+            steps {
+                sshagent(['ec2-key']) {
+                    sh '''
+                    scp -o StrictHostKeyChecking=no dist/*.whl ubuntu@65.1.55.198:~/flaskapp/
+                    
+                    ssh -o StrictHostKeyChecking=no ubuntu@65.1.55.198 << EOF
+                    cd flaskapp
+                    python3 -m venv venv
+                    source venv/bin/activate
+                    pip install *.whl
+                    pkill gunicorn || true
+                    nohup gunicorn -w 4 app:app -b 0.0.0.0:8000 &
+                    EOF
+                    '''
+                }
+            }
+        }
+
 
     }
 }
