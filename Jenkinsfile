@@ -54,7 +54,7 @@ pipeline {
                 sshagent(['ec2-key']) {
                     sh '''
                     scp -o StrictHostKeyChecking=no dist/*.whl ubuntu@65.1.55.198:~/flaskapp/
-                    
+                    scp -o StrictHostKeyChecking=no db_create.py ubuntu@65.1.55.198:~/flaskapp/
                     ssh -o StrictHostKeyChecking=no ubuntu@65.1.55.198 << EOF
                     cd flaskapp
                     python3 -m venv venv
