@@ -51,7 +51,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sshagent(['ubuntu']) {
+                sshagent(['ec2-key']) {
                     sh '''
                     scp -o StrictHostKeyChecking=no dist/flask_todo-1.0.0-py3-none-any.whl ubuntu@65.1.55.198:~/flaskapp/
                     scp -o StrictHostKeyChecking=no db_create.py ubuntu@65.1.55.198:~/flaskapp/
