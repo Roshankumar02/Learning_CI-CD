@@ -56,23 +56,27 @@ pipeline {
                     scp -o StrictHostKeyChecking=no dist/flask_todo-1.0.0-py3-none-any.whl ubuntu@65.1.55.198:~/flaskapp/
                     scp -o StrictHostKeyChecking=no db_create.py ubuntu@65.1.55.198:~/flaskapp/
 
-                    ssh -o StrictHostKeyChecking=no ubuntu@65.1.55.198 << EOF
+                    ssh -o StrictHostKeyChecking=no ubuntu@65.1.55.198 << 'EOF'
                     cd flaskapp
+
                     source venv/bin/activate
 
                     pkill gunicorn || true
                     pkill python || true
 
-                    pip install flask_todo-1.0.0-py3-none-any.whl
+                    pip install --force-reinstall flask_todo-1.0.0-py3-none-any.whl
 
                     python db_create.py
 
                     nohup python -m flask_todo.app > flask.log 2>&1 &
-                    EOF
+
+                    exit
+        EOF
                     '''
                 }
             }
         }
+
 
 
 
