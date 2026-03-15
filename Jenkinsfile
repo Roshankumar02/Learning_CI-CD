@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                pip install --break-system-packages -e .
+                python -m pip install --break-system-packages -e .
                 python -m pytest
                 '''
             }
