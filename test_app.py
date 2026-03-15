@@ -1,4 +1,4 @@
-from app import app
+from flask_todo.app import app
 
 def test_home_page():
     client = app.test_client()
