@@ -25,10 +25,11 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                python -m pytest
+                PYTHONPATH=. python -m pytest
                 '''
             }
         }
+
 
         stage('Build Artifact') {
             steps {
