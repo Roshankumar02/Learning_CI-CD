@@ -59,9 +59,9 @@ pipeline {
                     cd flaskapp
                     python3 -m venv venv
                     source venv/bin/activate
-                    pip install *.whl
+                    pip install --force-reinstall flask_todo-1.0.0-py3-none-any.whl
                     pkill gunicorn || true
-                    nohup gunicorn -w 4 app:app -b 0.0.0.0:8000 &
+                    nohup gunicorn -w 4 flask_todo.app:app -b 0.0.0.0:8000 &
                     EOF
                     '''
                 }
