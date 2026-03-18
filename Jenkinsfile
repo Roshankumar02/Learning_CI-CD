@@ -57,28 +57,40 @@ pipeline {
                     scp -o StrictHostKeyChecking=no db_create.py ubuntu@65.1.55.198:~/flaskapp/
 
                     ssh -o StrictHostKeyChecking=no ubuntu@65.1.55.198 << 'EOF'
-                    cd flaskapp
+
+                    cd ~/flaskapp
+
+                    # 🔧 Install Python if not exists
+                    sudo apt update -y
+                    sudo apt install -y python3-pip python3-venv
+
+                    # 🔧 Create venv if not exists
+                    if [ ! -d "venv" ]; then
+                        python3 -m venv venv
+                    fi
 
                     source venv/bin/activate
 
+                    # 🔧 Upgrade pip
+                    pip install --upgrade pip
+
+                    # 🔧 Install your app
+                    pip install --force-reinstall flask_todo-1.0.0-py3-none-any.whl
+
+                    # 🔧 Run DB setup
+                    python db_create.py
+
+                    # 🔥 Kill old app
                     pkill gunicorn || true
                     pkill python || true
 
-                    pip install --force-reinstall flask_todo-1.0.0-py3-none-any.whl
+                    # 🚀 Run with gunicorn (production way)
+                    nohup gunicorn -w 2 -b 0.0.0.0:5000 flask_todo.app:app > app.log 2>&1 &
 
-                    python db_create.py
-
-                    nohup python -m flask_todo.app > flask.log 2>&1 &
-
-                    exit
-        EOF
+                    EOF
                     '''
                 }
             }
         }
-
-
-
-
     }
 }
